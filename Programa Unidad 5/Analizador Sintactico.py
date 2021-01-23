@@ -3,7 +3,7 @@ import sys
 from AnalizadorLexico import tokens
 
 VERBOSE = 1
-
+#Prioridad a los tokens que sea necesario
 precedence = (
     ('left', 'INCLUDE', 'REQUIRE'),
     ('left', 'COMA'),
@@ -48,7 +48,7 @@ def p_declaration(p):
 				   | additive_expression
 	'''
 	pass
-
+#Gramaticas de grupo, declaracion de los posibles utiles en el codigo
 def p_echo_stmt(p):
 	'''echo_stmt : echo_stmt ECHO STRING PUNTOYCOMA
 				 | echo_stmt ECHO IDVAR PUNTOYCOMA
@@ -93,7 +93,7 @@ def p_area(p):
 			| PROTECTED
 	'''
 	pass
-
+#expresiones logicas
 def p_var_declaration(p):
 	'''var_declaration : VARIABLE PUNTOYCOMA var_declaration
                        | VAR VARIABLE IGUAL simple_expression
@@ -240,7 +240,7 @@ def p_simple_expression(p):
 						 | alert_stmt
 	'''
 	pass
-
+#Uso de expresiones logicas, definición de posibles usos
 def p_relop(p):
 	'''relop : MENOR
 			 | MENOR_IGUAL
@@ -261,7 +261,7 @@ def p_additive_expression(p):
     				       | VARIABLE INCREMENTO
 	'''
 	pass
-
+#Operaciones 
 def p_addop(p):
 	'''addop : SUMA
 			 | RESTA
@@ -273,7 +273,7 @@ def p_term(p):
 			| factor
 	'''
 	pass
-
+#Operaciones 
 def p_mulop(p):
 	'''mulop : MULTIPLICACION
 			 | DIVISION
@@ -301,7 +301,8 @@ def p_args_list(p):
 				 | expression
 	'''
 	pass
-
+  
+#identifica una produccion que genera su correspondiente literal
 def p_boolean(p):
 	'''boolean : TRUE
 			   | FALSE
@@ -321,7 +322,7 @@ def p_costructor(p):
 def p_empty(p):
 	'empty :'
 	pass
-
+#funcion que nos ayuda a recibir el error en caso de existir
 def p_error(p):
     if VERBOSE:
         if p is not None:
@@ -335,13 +336,14 @@ def p_error(p):
         raise Exception('syntax', 'error')
 
 
-
+#instanciamos el analizador sintactico
 parser = yacc.yacc()
 
-script = 'archivo.dart'
+#Archivo que se analizara 
+script = 'Ejemplo.dart'
 scriptfile = open(script, 'r')
 scriptdata = scriptfile.read()
-#print (scriptdata)
+
 
 print (chr(27)+"[0;36m"+"Iniciando Analisis Sintactico..."+chr(27)+"[0m")
 parser.parse(scriptdata, tracking=False)
